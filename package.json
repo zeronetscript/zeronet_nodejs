@@ -1,0 +1,9 @@
+{
+  "name":"common",
+  "description":"coffeescript for zeronet in nodejs",
+  "dependencies":{
+    "http":"",
+    "https":"",
+    "request":""
+  }
+}
