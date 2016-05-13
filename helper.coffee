@@ -6,24 +6,59 @@ btoa = require "btoa"
 
 class BlogController extends ZeroWebsocket
 
-  constructor:(url,blogs,addFunc,endFunc,testFunc)->
+  constructor:(url,collectFunc)->
     super url
-    @blogs=blogs
-    @addFunc=addFunc
+    @changed=false
+    @collectFunc=collectFunc
 
-      
-    @endFunc=endFunc
+  alreadyHave:(title)=>
+    for b in @data.post
+      if b.title==title
+        return true
+    return false
 
 
-    if !testFunc
-      @log "default test func to notExist"
-      @testFunc=@notExist
+  addPost:(post)->
+    post.post_id=@data.next_post_id
 
-  notExist:(data,blog)=>
-    for b in data.post
-      if b.title==blog.title
-        return false
-    return true
+    if !@data.tag
+      @data.tag=[]
+
+    for t in post.tag
+      @data.tag.push({
+        value:t,
+        post_id:post.post_id
+      })
+
+    delete post.tag
+
+    @log "add:",post.title
+
+    @data.post.unshift(post)
+    @data.next_post_id++
+    @changed = true
+
+  save:()=>
+    @data.modified = (new Date).getTime()/1000
+
+    json_raw = unescape(
+      # Encode to json, encode utf8
+      encodeURIComponent(JSON.stringify(@data, undefined, '\t')))
+      # Convert to to base64 and send
+      #
+    @cmd "fileWrite", ["data/data.json",btoa(json_raw)], (res)=>
+      if res != "ok"
+        @log "write failed"
+        @finish()
+        return
+
+      @log "write ok"
+      @cmd "siteSign", ["stored", "content.json"], (res) =>
+        @log "Sign result", res
+
+        @cmd "sitePublish", ["stored"], (res) =>
+         @log "Publish result:", res
+         @finish()
 
   onOpenWebsocket: (e)->
 
@@ -34,52 +69,15 @@ class BlogController extends ZeroWebsocket
     @log "call fileGet"
     @cmd "fileGet", ["data/data.json"], (res)=>
 
-    
       @log "file getted"
+      @data=JSON.parse(res)
+      @collectFunc @
 
-      data=JSON.parse(res)
 
-      changed = false
-      for blog in @blogs
-        if !@testFunc data, blog
-          @log "skip:", blog.title
-          continue
-
-        @log "add:" ,blog.title
-        changed=true
-        blog.post_id=data.next_post_id
-        @addFunc data ,blog
-        data.next_post_id++
-
-      if not changed
-        @log "not changed"
-        self.ws.close()
-        return
-
-      data.modified = (new Date).getTime()/1000
-
-      if @endFunc
-        @endFunc data
-
-      json_raw = unescape(
-        # Encode to json, encode utf8
-        encodeURIComponent(JSON.stringify(data, undefined, '\t')))
-        # Convert to to base64 and send
-        #
-      @cmd "fileWrite", ["data/data.json",btoa(json_raw)], (res)=>
-        if res != "ok"
-          @log "write failed"
-          self.ws.close()
-          return
-
-        @log "write ok"
-        @cmd "siteSign", ["stored", "content.json"], (res) =>
-          @log "Sign result", res
-
-        @cmd "sitePublish", ["stored"], (res) =>
-         @log "Publish result:", res
-         self.ws.close()
           
+  finish:()=>
+    @log "finish, close websocket"
+    @ws.close()
 
   onCloseWebsocket: (e, reconnect=10000) =>
       @log "closed"
@@ -87,7 +85,7 @@ class BlogController extends ZeroWebsocket
 
 exports.BlogHelper =
 class BlogHelper
-  constructor:(option,blogs,addFunc,testFunc)->
+  constructor:(option,collectFunc)->
     new Parse option,(url)->
-      return new BlogController url,blogs,addFunc,testFunc
+      return new BlogController url,collectFunc
 
