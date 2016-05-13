@@ -4,6 +4,7 @@
   "dependencies":{
     "http":"",
     "btoa":"",
+    "feedparser":"",
     "websocket":"",
     "https":"",
     "coffee-script":"",
