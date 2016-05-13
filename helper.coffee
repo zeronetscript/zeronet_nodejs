@@ -1,6 +1,8 @@
 ZeroWebsocket= (require "./common.coffee").ZeroWebsocket
 Parse = (require "./common.coffee").Parse
 
+WaitGroup=require 'waitgroup'
+
 btoa = require "btoa"
 
 
@@ -11,12 +13,65 @@ class BlogController extends ZeroWebsocket
     @changed=false
     @collectFunc=collectFunc
     @lastAction=lastAction
+    @wg = new WaitGroup
 
   alreadyHave:(title)=>
     for b in @data.post
       if b.title==title
         return true
     return false
+
+
+  toRemoveIfNoRef:(post_id)=>
+
+    parse_res= (res)=>
+      if res[0].counter+res[1].counter is 0
+        @removeList.push(post_id)
+
+    queryRef = "SELECT  COUNT(*) AS counter 
+      FROM comment WHERE post_id=#{post_id}  
+      UNION ALL
+      SELECT COUNT(*) AS counter 
+      FROM post_vote WHERE post_id=#{post_id}"
+
+    @wg.add()
+    @cmd "dbQuery", [queryRef],(res)=>
+      if res.error
+        @log res.error
+      else
+        parse_res(res)
+      @wg.done()
+
+    return
+
+  recycle:(callback,maxTime=10*24*60*60)=>
+
+    @log "recycle"
+    minTime = (new Date()).getTime()/1000 - maxTime
+    @data.post.sort((lhs,rhs)->
+      return Math.sign(lhs.date_published - rhs.date_published)
+    )
+
+    @removeList = []
+    
+
+    for p in @data.post
+      if p.date_published < minTime && p.body!=""
+        @toRemoveIfNoRef(p.post_id)
+
+
+    @wg.wait(()=>
+      for p in @data.post
+        for r,i in @removeList
+          if p.post_id is r
+            p.body=""
+            @log "recycle ",p.title
+            @removeList.splice i,1
+            break
+      callback()
+    )
+
+
 
 
   addPost:(post)->
