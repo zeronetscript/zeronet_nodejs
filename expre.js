@@ -70,7 +70,6 @@ function collectFunc(blogController){
       }
     }
 
-    console.log("unchanged");
     blogController.save();
 
   });

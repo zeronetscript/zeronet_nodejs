@@ -6,10 +6,11 @@ btoa = require "btoa"
 
 class BlogController extends ZeroWebsocket
 
-  constructor:(url,collectFunc)->
+  constructor:(url,collectFunc,lastAction="publish")->
     super url
     @changed=false
     @collectFunc=collectFunc
+    @lastAction=lastAction
 
   alreadyHave:(title)=>
     for b in @data.post
@@ -53,8 +54,18 @@ class BlogController extends ZeroWebsocket
         return
 
       @log "write ok"
+
+      if @lastAction is "save"
+        @log "save stage only"
+        @finish()
+        return
+
       @cmd "siteSign", ["stored", "content.json"], (res) =>
         @log "Sign result", res
+        if @lastAction is "sign"
+          @log "sign stage only"
+          @finish()
+          return
 
         @cmd "sitePublish", ["stored"], (res) =>
          @log "Publish result:", res
@@ -85,7 +96,7 @@ class BlogController extends ZeroWebsocket
 
 exports.BlogHelper =
 class BlogHelper
-  constructor:(option,collectFunc)->
+  constructor:(option,collectFunc,lastAction)->
     new Parse option,(url)->
-      return new BlogController url,collectFunc
+      return new BlogController url,collectFunc,lastAction
 
