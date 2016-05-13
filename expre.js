@@ -46,7 +46,7 @@ function collectFunc(blogController){
 
   req.on('response',function(res){
     if (res.statusCode!=200) {
-      console.log(thisOne.name+" error done");
+      console.log(" error done:",res.statusCode);
       blogController.finish();
       return;
     }
