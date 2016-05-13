@@ -3,6 +3,8 @@
   "description":"coffeescript for zeronet in nodejs",
   "dependencies":{
     "http":"",
+    "jsdom":"",
+    "waitgroup":"",
     "btoa":"",
     "feedparser":"",
     "websocket":"",
