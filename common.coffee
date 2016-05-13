@@ -85,7 +85,7 @@ https = require 'https'
 
 exports.Parse=
 class Parse
-  constructor: (option,addFunc,createFunc) ->
+  constructor: (option,createFunc) ->
 
     self=@
     @createFunc = createFunc

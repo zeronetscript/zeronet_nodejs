@@ -52,6 +52,7 @@ function addBlog(data,blog){
 
 function endFunc(data){
 
+  console.log("endfunc")
   for (var i in data.post){
     if (data.post[i].post_id==183) {
       data.post[i].date_published = new Date().getTime()/1000;

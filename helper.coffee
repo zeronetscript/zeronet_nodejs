@@ -10,7 +10,11 @@ class BlogController extends ZeroWebsocket
     super url
     @blogs=blogs
     @addFunc=addFunc
+
+      
     @endFunc=endFunc
+
+
     if !testFunc
       @log "default test func to notExist"
       @testFunc=@notExist
@@ -48,7 +52,7 @@ class BlogController extends ZeroWebsocket
       data.modified = (new Date).getTime()/1000
 
       if @endFunc
-        @endFunc
+        @endFunc data
 
       json_raw = unescape(
         # Encode to json, encode utf8
@@ -76,7 +80,7 @@ class BlogController extends ZeroWebsocket
 
 exports.BlogHelper =
 class BlogHelper
-  constructor:(option,blogs,addFunc)->
-    new Parse option,addFunc,(url)->
-      return new BlogController url,blogs,addFunc
+  constructor:(option,blogs,addFunc,testFunc)->
+    new Parse option,(url)->
+      return new BlogController url,blogs,addFunc,testFunc
 
