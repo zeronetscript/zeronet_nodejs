@@ -85,12 +85,12 @@ https = require 'https'
 
 exports.Parse=
 class Parse
-  constructor: (option,func) ->
+  constructor: (option,addFunc,createFunc) ->
 
     self=@
-    @func = func
+    @createFunc = createFunc
 
-    if !option.host 
+    if !option.host
       option.host = "127.0.0.1"
 
     if !option.port
@@ -133,7 +133,7 @@ class Parse
 
     url = @option.proto.ws+"://"+@option.host+":"+@option.port+"/Websocket?wrapper_key="+@wrapper_key
 
-    @zws = @func url
+    @zws = @createFunc url
 
     @zws.connect()
 

@@ -3,7 +3,9 @@
   "description":"coffeescript for zeronet in nodejs",
   "dependencies":{
     "http":"",
+    "btoa":"",
     "https":"",
+    "coffee-script":"",
     "request":""
   }
 }
