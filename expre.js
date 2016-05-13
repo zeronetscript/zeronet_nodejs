@@ -6,7 +6,7 @@ var coffeescript = require('coffee-script/register')
 var feedparser = new FeedParser();
 
 
-var BlogHelper = require("./helper").BlogHelper
+var BlogHelper = require("./helper").BlogHelper;
 
 
 
@@ -61,8 +61,21 @@ function endFunc(data){
 }
 
 feedparser.on('end',function(){
+
+  console.log("blogs prepared:"+blogs.length);
   new BlogHelper(
-      {addr:"198owRUJpj6VHNp3U3foCeXTSjjgYJf2WT"},
+      {
+        addr:"18Tww9kCQ2wzeSJNrQCXXqdurw6ggTZ2mV"
+        /*
+         *,
+        host:"127.0.0.1",
+        port:43110,
+        proto:{
+          ws:"ws",
+          http:"http"
+        }
+        */
+      },
       blogs,addBlog,endFunc);
 });
 

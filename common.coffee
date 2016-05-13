@@ -9,7 +9,9 @@ class ZeroWebsocket
 
 
   connect: ->
-    @ws = new w3cwebsocket(@url)
+    @ws = new w3cwebsocket(@url,null,null,null,null,{
+      maxReceivedFrameSize: 50*1024*1024
+    })
     @ws.onmessage = @onMessage
     @ws.onopen = @onOpenWebsocket
     @ws.onerror = @onErrorWebsocket
@@ -98,6 +100,10 @@ class Parse
 
     if !option.proto
       option.proto={http:"http",ws:"ws"}
+    if !option.proto.ws
+      option.proto.ws="ws"
+    if !option.proto.http
+      option.proto.ws="http"
 
     @option = option
 
@@ -135,6 +141,7 @@ class Parse
 
     @zws = @createFunc url
 
+    console.log "connect to ",url
     @zws.connect()
 
 

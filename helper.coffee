@@ -26,9 +26,16 @@ class BlogController extends ZeroWebsocket
     return true
 
   onOpenWebsocket: (e)->
+
+    @log "web socket opened"
+
     self=@
 
+    @log "call fileGet"
     @cmd "fileGet", ["data/data.json"], (res)=>
+
+    
+      @log "file getted"
 
       data=JSON.parse(res)
 
@@ -68,11 +75,11 @@ class BlogController extends ZeroWebsocket
         @log "write ok"
         @cmd "siteSign", ["stored", "content.json"], (res) =>
           @log "Sign result", res
-          self.ws.close()
 
-        #@cmd "sitePublish", ["stored"], (res) =>
-        # @log "Publish result:", res
-        #  
+        @cmd "sitePublish", ["stored"], (res) =>
+         @log "Publish result:", res
+         self.ws.close()
+          
 
   onCloseWebsocket: (e, reconnect=10000) =>
       @log "closed"
