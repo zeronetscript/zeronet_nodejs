@@ -229,7 +229,7 @@ new BlogHelper(
     {
       host:"127.0.0.1",
       port:43110,
-      addr:"198owRUJpj6VHNp3U3foCeXTSjjgYJf2WT"
+      addr:"1MpKFgUUAPd9ZxTQjhixCXkzqEGYuozq4y"
     },
     collectFunc);
 

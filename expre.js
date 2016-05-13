@@ -100,7 +100,7 @@ function collectFunc(blogController){
 
 new BlogHelper(
       {
-        addr:"198owRUJpj6VHNp3U3foCeXTSjjgYJf2WT"
+        addr:"18Tww9kCQ2wzeSJNrQCXXqdurw6ggTZ2mV"
         /*
          *,
         host:"127.0.0.1",
