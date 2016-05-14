@@ -48,7 +48,10 @@ function collectFunc(blogController){
       }
     }
 
-    blogController.save();
+    blogController.recycle(function(){
+      blogController.save();
+    })
+
 
   });
 
