@@ -4,6 +4,7 @@
   "dependencies":{
     "http":"",
     "jsdom":"",
+    "jquery":"",
     "waitgroup":"",
     "btoa":"",
     "feedparser":"",
