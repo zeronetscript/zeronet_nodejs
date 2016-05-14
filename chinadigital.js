@@ -96,4 +96,4 @@ new BlogHelper(
           http:"http"
         }
       },
-      collectFunc,"save");
+      collectFunc);
