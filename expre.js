@@ -40,14 +40,6 @@ function collectFunc(blogController){
       return;
     }
 
-
-    console.log("update first...");
-    for (var i in blogController.data.post){
-      if (blogController.data.post[i].post_id==183) {
-        blogController.data.post[i].date_published = new Date().getTime()/1000;
-      }
-    }
-
     blogController.recycle(function(){
       blogController.save();
     })
