@@ -111,7 +111,7 @@ class BlogController extends ZeroWebsocket
     @changed = true
 
   save:()=>
-    @data.modified = (new Date).getTime()/1000
+    @data.modified = Math.max((new Date).getTime()/1000,@data.modified+1)
 
     json_raw = unescape(
       # Encode to json, encode utf8
@@ -120,7 +120,7 @@ class BlogController extends ZeroWebsocket
       #
     @cmd "fileWrite", ["data/data.json",btoa(json_raw)], (res)=>
       if res != "ok"
-        @log "write failed"
+        @log "write failed",res
         @finish()
         return
 
