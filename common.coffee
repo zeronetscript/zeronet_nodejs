@@ -112,6 +112,8 @@ class Parse
     else
       mod=https
 
+    console.log "geting: 
+      #{@option.proto.http}://#{@option.host}:#{@option.port}/#{@option.addr}"
     mod.get {
       hostname:option.host
       port:option.port
