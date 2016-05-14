@@ -7,7 +7,7 @@ var path = require('path');
 var FeedParser = require('feedparser');
 var coffeescript = require('coffee-script/register')
 
-var BlogHelper = require("./helper").BlogHelper;
+var BlogHelper = require("./bloghelper").BlogHelper;
 
 
 

@@ -6,7 +6,7 @@ var coffeescript = require('coffee-script/register')
 var feedparser = new FeedParser();
 
 
-var BlogHelper = require("./helper").BlogHelper;
+var BlogHelper = require("./bloghelper").BlogHelper;
 
 
 
