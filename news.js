@@ -220,6 +220,13 @@ function collectFunc(blogController){
 
 
   wg.wait(function(){
+
+    if(!blogController.changed){
+      console.log("unchanged");
+      blogController.finish();
+      return;
+    }
+
     blogController.recycle(function(){
       blogController.save();
     });
