@@ -61,13 +61,29 @@ class BlogController extends ZeroWebsocket
 
 
     @wg.wait(()=>
-      for p in @data.post
-        for r,i in @removeList
-          if p.post_id is r
-            p.body=""
-            @log "recycle ",p.title
-            @removeList.splice i,1
-            break
+
+      @data.tag=@data.tag.filter((t)=>
+        idx=@removeList.indexOf(t.post_id)
+        if  idx==-1
+          return true
+
+        @log "recycle tag \"#{t.value}\" of post_id:#{t.post_id}"
+        return false
+      )
+
+      @data.post.filter((p)=>
+        idx=@removeList.indexOf(p.post_id)
+        if  idx==-1
+          return false
+
+        p.body=""
+        @log "recycle ",p.title
+
+        
+        @removeList.splice idx,1
+        return false
+      )
+
       callback()
     )
 

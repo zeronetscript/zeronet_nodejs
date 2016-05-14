@@ -16,28 +16,6 @@ function toUTC(date_object){
 }
 
 
-function addBlog(data,blog){
-
-  if (!data.tag){
-    data.tag=[]
-  }
-
-  for(var i in blog.tag){
-      data.tag.push({value:blog.tag[i],post_id:blog.post_id});
-  }
-  delete blog.tag;
-
-  data.post.unshift(blog);
-}
-
-function endFunc(data){
-
-  
-}
-
-
-
-
 var req = request("http://www.expreview.com/rss.php");
 
 
