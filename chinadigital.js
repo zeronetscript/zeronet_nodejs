@@ -8,13 +8,6 @@ var BlogHelper = require("./bloghelper").BlogHelper;
 
 var $ = require('jquery')(require("jsdom").jsdom().defaultView);
 
-function toUTC(date_object){
-
-  return date_object.getTime()/1000 + 8*60*60;
-}
-
-
-
   
 
 function extractBody(description){
@@ -75,7 +68,7 @@ function collectFunc(blogController){
 
       blogController.addPost({
           title:article.title,
-          date_published: toUTC(new Date(article.pubdate)),
+          date_published: blogController.toGMT8Sec(new Date(article.pubdate)),
           body:"---\n"+extractBody(article.description),
           tag:article.categories.filter(function(cat){
             return cat.match(/Level.*Article/)==null
