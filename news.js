@@ -115,7 +115,7 @@ function add_article(name,article,extract_func,blogController){
 
       var blog = {
         title:name+" "+article.title,
-        date_published: blogController.toGMT8Sec(new Date(article.pubdate)),
+        date_published: new Date(article.pubdate).getTime()/1000,
         body:"---\n"+body,
         tag:[]
       };
