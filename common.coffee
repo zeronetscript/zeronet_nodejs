@@ -79,16 +79,16 @@ class ZeroWebsocket
     if @onClose? then @onClose(e)
 
   toGMT8Sec:(t)=>
-    if typeof t is 'int'
+    if typeof t is 'number'
       return t + 8*60*60
     else
-      return t.getTime()/1000 + 8*60*60
+      return @toGMT8Sec t.getTime()/1000
 
-  toGMT8MSec: (utc)=>
-    if typeof utc is 'int'
-      return utc + 8*60*60*1000
+  toGMT8MSec: (t)=>
+    if typeof t is 'number'
+      return t + 8*60*60*1000
     else
-      return utc.getTime() + 8*60*60*1000
+      return @toGMT8MSec t.getTime()
 
 
 http = require 'http'
