@@ -26,9 +26,6 @@ if (fs.accessSync(jqueryPath)) {
 
 var jquery = fs.readFileSync(jqueryPath,"utf-8");
 
-var blogs=[];
-
-
 function collectContent($,jqueryCssSelector){
 
   var contents=$(jqueryCssSelector);
@@ -99,7 +96,9 @@ function add_article(name,article,extract_func,blogController){
     src:[jquery],
     done:function(err,window){
       if (err) {
-        window.close();
+        if (window) {
+          window.close();
+        }
         wg.done();
         return;
       }
@@ -116,7 +115,7 @@ function add_article(name,article,extract_func,blogController){
 
       var blog = {
         title:name+" "+article.title,
-        date_published: (new Date(article.pubdate)).getTime()/1000,
+        date_published: blogController.toGMT8Sec(new Date(article.pubdate)),
         body:"---\n"+body,
         tag:[]
       };

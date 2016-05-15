@@ -78,6 +78,17 @@ class ZeroWebsocket
       ), reconnect
     if @onClose? then @onClose(e)
 
+  toGMT8Sec:(t)=>
+    if typeof t is 'int'
+      return t + 8*60*60
+    else
+      return t.getTime()/1000 + 8*60*60
+
+  toGMT8MSec: (utc)=>
+    if typeof utc is 'int'
+      return utc + 8*60*60*1000
+    else
+      return utc.getTime() + 8*60*60*1000
 
 
 http = require 'http'
@@ -145,8 +156,5 @@ class Parse
 
     console.log "connect to ",url
     @zws.connect()
-
-
-
 
 

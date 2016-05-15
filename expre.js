@@ -10,10 +10,6 @@ var BlogHelper = require("./bloghelper").BlogHelper;
 
 
 
-function toUTC(date_object){
-
-  return date_object.getTime()/1000 + 8*60*60;
-}
 
 
 var req = request("http://www.expreview.com/rss.php");
@@ -61,7 +57,7 @@ function collectFunc(blogController){
 
       blogController.addPost({
           title:article.title,
-          date_published: toUTC(new Date(article.pubdate)),
+          date_published: blogController.toGMT8Sec(new Date(article.pubdate)),
           body:"---\n"+article.description,
           tag:article.categories
           });
