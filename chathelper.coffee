@@ -62,6 +62,7 @@ class ChatController extends ZeroWebsocket
         return
 
       @log "write ok"
+      @changed = false
 
       if @lastAction is "save"
         @log "save stage only"
