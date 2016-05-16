@@ -66,7 +66,7 @@ function extract(user,$,chatController){
 
       chatController.addMessage({
           body:user.name+":"+content,
-          date_added:chatController.toGMT8MSec(timeMs)
+          date_added:timeMs
       });
     }
 
