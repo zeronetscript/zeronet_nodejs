@@ -96,6 +96,6 @@ new ChatHelper(
       },
       ["zeroid.bit","web","telegrambot","1My4AHpEjVQB1Jvetpiuha7o2QtQgWHL5L"]
       ,true,
-      collectFunc,"save");
+      collectFunc);
 
 
