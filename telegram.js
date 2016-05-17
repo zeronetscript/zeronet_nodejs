@@ -52,10 +52,11 @@ function telegram_2_zeronet(message,chatController){
     from=message.chat.title+":";
   }
   if(message.from){
-    from = from+ message.from.first_name+":";
+    from = from+ message.from.first_name;
     if(message.from.last_name){
       from=from+" "+message.from.last_name;
     }
+    from = from+":";
   }
 
   chatController.addMessage(
