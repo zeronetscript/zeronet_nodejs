@@ -53,6 +53,9 @@ function telegram_2_zeronet(message,chatController){
   }
   if(message.from){
     from = from+ message.from.first_name+":";
+    if(message.from.last_name){
+      from=from+" "+message.from.last_name;
+    }
   }
 
   chatController.addMessage(
