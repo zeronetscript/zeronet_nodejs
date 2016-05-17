@@ -41,7 +41,7 @@ function telegram_2_zeronet(message,chatController){
     from=message.chat.title+":";
   }
   if(message.from){
-    from = from+ message.from.username+":";
+    from = from+ message.from.first_name+":";
   }
 
   chatController.addMessage(
