@@ -3,17 +3,28 @@
 
 var coffeescript = require('coffee-script/register')
 var ChatHelper = require("./chathelper").ChatHelper;
+var jsonfile = require('jsonfile')
+var path = require('path')
+
+var configPath= path.join(__dirname,"config.json")
+
+var config = jsonfile.readFileSync(configPath,{"throws":false});
+
+if(!config || ! config.token){
+
+  console.log("please put config.json in ",configPath,", contents like {token:'your telegram bot api token'}");
+
+  return;
+}
 
 var telegram = require('telegram-bot-api');
 var api = new telegram({
+	token: config.token,
 	updates: {
 		enabled: true,
 		get_interval: 1000
 	},
-  http_proxy:{
-    host:"127.0.0.1",
-    port:8787
-  }
+  http_proxy:config.http_proxy
 });
 
 

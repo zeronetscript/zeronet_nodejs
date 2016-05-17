@@ -8,6 +8,8 @@
     "waitgroup":"",
     "btoa":"",
     "feedparser":"",
+    "path":"",
+    "jsonfile":"",
     "websocket":"",
     "https":"",
     "coffee-script":"",
