@@ -84,7 +84,9 @@ function jsdomWrapper(user,chatController,callback){
     done:function(err,window){
       if (err) {
         console.log(err);
-        window.close();
+        if(window){
+         window.close();
+        }
         callback();
         return;
       }
