@@ -78,7 +78,7 @@ function collectFunc(chatController){
 
   setInterval(function(){
     publishZeronet(chatController);
-  },1000);
+  },60000);
 
   console.log("setting up message callback");
 
