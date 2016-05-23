@@ -29,6 +29,10 @@ class ChatController extends ZeroWebsocket
       return e.date_added>minTime
     )
 
+  receiveUserCallback:(inner_path)=>
+    @log "user file ",inner_path," changed"
+
+    
 
   addMessage:(message)->
 
@@ -77,6 +81,11 @@ class ChatController extends ZeroWebsocket
 
   getAndCollect:()=>
 
+    if @run
+      return
+
+    @run = true
+
 
     path = "data/users/#{@site_info.auth_address}/"
 
@@ -107,12 +116,22 @@ class ChatController extends ZeroWebsocket
 
   route: (cmd, message) ->
     if cmd is "setSiteInfo"
-      @log "getting setSiteInfo"
+      site_info = message.params
+      if site_info.event?[0] == "file_done"
+        @log "file done",site_info.event[1]
+      if site_info.event?[0] == "file_done" and
+      site_info.event[1].match /.*users.*data.json$/
+        @log "file_done",site_info.event[1]
+        @receiveUserCallback(site_info.event[1])
+
       if message.params.cert_user_id
         @log "get cert_user_id:",message.params.cert_user_id
         @site_info = message.params
         @getAndCollect()
         return
+
+
+
 
       if !@userInfo
         @log "user info not provided,exit"
