@@ -10,9 +10,10 @@ var request = require('request');
 
 var chatController;
 
-function response(user_auth_address,content){
+function sendResponse(user_auth_address,content){
 
   chatController.data.response[user_auth_address]=content;
+  chatController.changed=true;
   chatController.save(false);
 }
 
@@ -57,11 +58,11 @@ function receiveUserCallback(inner_path){
     if (user_request==null ) {
       return;
     }
-    request(data.request, function (error, response, body) {
+    request(user_request, function (error, response, body) {
       if (!error && response.statusCode == 200) {
-        response(user_auth_address,body);
+        sendResponse(user_auth_address,body);
       }else{
-        response(user_auth_address,"error:"+error+",statusCode:"+statusCode);
+        sendResponse(user_auth_address,"error:"+error);
       }
     });
   });
@@ -79,7 +80,6 @@ function collectFunc(chatController1){
     chatController1.data.response={};
   }
   
-  all_user_response=chatController1.data.response;
 }
 
 new ChatHelper(
